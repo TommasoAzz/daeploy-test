@@ -1,0 +1,28 @@
+version: '3'
+services:
+  ml_service:
+    build: ./ml_service/
+    container_name: ml_service
+    volumes:
+      - ./ml_service/iris.csv:/ml_service/iris.csv
+      - ./ml_service/classifier.sav:/ml_service/classifier.sav
+    ports:
+      - 3000:3000
+    networks:
+      - daeploy_test
+  web_interface:
+    build: ./web_interface/
+    container_name: web_interface
+    ports:
+      - 4000:80
+    networks:
+      - daeploy_test
+  data_storage:
+    image: redis:6.2.6
+    networks:
+      - daeploy_test
+
+
+networks:
+  daeploy_test:
+    driver: bridge
